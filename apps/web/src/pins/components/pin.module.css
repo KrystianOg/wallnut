@@ -3,5 +3,11 @@
   position: absolute;
   width: var(--pin-size);
   height: var(--pin-size);
-  background-color: red;
+  /* background-color: red; */
+
+  & .pin-icon {
+    --icon-size: 24px;
+    height: var(--icon-size);
+    width: var(--icon-size);
+  }
 }

@@ -1,16 +1,38 @@
 import type { Point2D } from "../../types";
 import styles from "./pin.module.css";
 
-export type PinType = Point2D; // & {};
+export type PinType = Point2D & {
+  color: string; // hex string
+};
 
-export function Pin(props: PinType) {
+export function Pin({ x, y, color }: PinType) {
   return (
     <div
       className={styles.pin}
       style={{
-        left: props.x,
-        top: props.y,
+        left: x,
+        top: y,
       }}
-    ></div>
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth="1.5"
+        stroke={color}
+        className="pin-icon"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+        />
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"
+        />
+      </svg>
+    </div>
   );
 }

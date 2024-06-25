@@ -5,16 +5,23 @@ const mock: PinType[] = [
   {
     x: 0,
     y: 0,
+    color: "#642424",
   },
   {
     x: 1,
     y: 1,
+    color: "#F80000",
   },
   {
     x: 10,
     y: 11,
+    color: "#1C542D",
   },
-  { x: 5, y: 10 },
+  {
+    x: 5,
+    y: 10,
+    color: "#5D9B9B",
+  },
 ];
 
 async function sleep(ms: number) {

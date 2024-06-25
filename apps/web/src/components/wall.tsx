@@ -21,7 +21,14 @@ export function Wall() {
       }}
     >
       {!!pins.length &&
-        pins.map((pin) => <Pin x={pin.x * PIN_SIZE} y={pin.y * PIN_SIZE} />)}
+        pins.map((pin, i) => (
+          <Pin
+            key={i}
+            x={pin.x * PIN_SIZE}
+            y={pin.y * PIN_SIZE}
+            color={pin.color}
+          />
+        ))}
     </div>
   );
 }
