@@ -1,0 +1,7 @@
+.pin {
+  --pin-size: 78px;
+  position: absolute;
+  width: var(--pin-size);
+  height: var(--pin-size);
+  background-color: red;
+}
