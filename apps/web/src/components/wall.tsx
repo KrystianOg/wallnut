@@ -1,12 +1,24 @@
+import { useCallback } from "react";
 import { Pin } from "../pins/components/pin";
 import { useMouseDnD } from "../hooks/useMouseDnD";
 import { usePins } from "../pins/hooks/usePins";
+import { useOverlay } from "../context/OverlayContext";
+import { Vector2D } from "../types";
 
 const PIN_SIZE = 78;
 
 export function Wall() {
   // TODO: add some loading state
-  const offset = useMouseDnD();
+  const { offset, setOffset } = useOverlay();
+
+  const handleMouseMove = useCallback(
+    (v: Vector2D) => {
+      setOffset((prev) => ({ x: prev.x + v.x, y: prev.y + v.y }));
+    },
+    [setOffset],
+  );
+
+  useMouseDnD(handleMouseMove);
   const [pins] = usePins();
 
   return (
@@ -20,15 +32,14 @@ export function Wall() {
         top: -offset.y,
       }}
     >
-      {!!pins.length &&
-        pins.map((pin, i) => (
-          <Pin
-            key={i}
-            x={pin.x * PIN_SIZE}
-            y={pin.y * PIN_SIZE}
-            color={pin.color}
-          />
-        ))}
+      {pins?.map((pin, i) => (
+        <Pin
+          key={i}
+          x={pin.x * PIN_SIZE}
+          y={pin.y * PIN_SIZE}
+          color={pin.color}
+        />
+      ))}
     </div>
   );
 }

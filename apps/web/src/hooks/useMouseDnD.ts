@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { Vector2D } from "../types";
 import { useMousePosition } from "./useMousePosition";
 import { usePrevious } from "./usePrevious";
@@ -7,8 +7,7 @@ import { usePrevious } from "./usePrevious";
  * when user visits the page he is given random coordinate, and he can navigate from here
  * return new window offset (? - offset is between current view and (0,0)
  */
-export function useMouseDnD(): Vector2D {
-  const [offset, setOffset] = useState<Vector2D>({ x: 0, y: 0 });
+export function useMouseDnD(cb: (v: Vector2D) => void): void {
   const mousePosition = useMousePosition();
   const previousMousePosition = usePrevious(mousePosition);
   const isMouseDown = useRef<boolean>(false);
@@ -24,11 +23,8 @@ export function useMouseDnD(): Vector2D {
 
     const v = new Vector2D(mousePosition, previousMousePosition);
 
-    setOffset((prev) => ({
-      x: prev.x + v.x,
-      y: prev.y + v.y,
-    }));
-  }, [mousePosition, previousMousePosition]);
+    cb(v);
+  }, [mousePosition, previousMousePosition, cb]);
 
   useEffect(() => {
     const onMouseDown = () => {
@@ -47,6 +43,4 @@ export function useMouseDnD(): Vector2D {
       window.removeEventListener("mouseup", onMouseUp);
     };
   }, []);
-
-  return offset;
 }
