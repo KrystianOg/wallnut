@@ -1,10 +1,14 @@
 .overlay {
+  --smth: 0.5rem;
   position: absolute;
-  bottom: 0;
-  right: 0;
+  bottom: var(--smth);
+  right: var(--smth);
 
   /*  */
-  width: 150px;
-  height: 200px;
+  width: 200px;
+  height: 300px;
   outline: 1px solid red;
+  border-radius: var(--smth);
+  padding: var(--smth);
+  backdrop-filter: blur(16px);
 }

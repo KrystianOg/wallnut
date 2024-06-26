@@ -35,3 +35,15 @@ export class Vector2D {
     }
   }
 }
+
+export class Rectangle {
+  public point: Point2D;
+  public height: number;
+  public width: number;
+
+  constructor(point: Point2D, width: number, height: number) {
+    this.point = point;
+    this.width = width;
+    this.height = height;
+  }
+}

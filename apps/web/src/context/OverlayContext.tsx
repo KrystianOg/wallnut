@@ -1,5 +1,6 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useMemo, useState } from "react";
 import { Vector2D } from "../types";
+import { PIN_SIZE } from "../constants";
 
 type OverlayContextProps = {
   offset: Vector2D;
@@ -17,4 +18,28 @@ export const OverlayProvider = ({ children }: React.PropsWithChildren) => {
   );
 };
 
-export const useOverlay = () => useContext(OverlayContext);
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const CHUNK_SIZE = 4;
+export const useOverlay = () => {
+  const { offset, ...context } = useContext(OverlayContext);
+
+  const gridOffset = useMemo<Vector2D>(() => {
+    return new Vector2D(
+      Math.floor(offset.x / PIN_SIZE),
+      Math.floor(offset.y / PIN_SIZE),
+    );
+  }, [offset]);
+
+  /// position on virtual grid
+  const offsetVGrid = useMemo(
+    () => new Vector2D(offset.x / PIN_SIZE, offset.y / PIN_SIZE),
+    [offset.x, offset.y],
+  );
+
+  return {
+    offset,
+    gridOffset,
+    offsetVGrid,
+    ...context,
+  };
+};

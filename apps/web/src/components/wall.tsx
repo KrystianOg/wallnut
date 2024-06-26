@@ -4,8 +4,7 @@ import { useMouseDnD } from "../hooks/useMouseDnD";
 import { usePins } from "../pins/hooks/usePins";
 import { useOverlay } from "../context/OverlayContext";
 import { Vector2D } from "../types";
-
-const PIN_SIZE = 78;
+import { PIN_SIZE } from "../constants";
 
 export function Wall() {
   // TODO: add some loading state
@@ -27,7 +26,6 @@ export function Wall() {
         width: "100vw",
         height: "100vh",
         position: "relative",
-        backgroundColor: "gray",
         left: -offset.x,
         top: -offset.y,
       }}
