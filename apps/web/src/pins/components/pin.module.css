@@ -1,13 +1,28 @@
 .pin {
   --pin-size: 78px;
+  --transform-distance: 14px;
   position: absolute;
   width: var(--pin-size);
   height: var(--pin-size);
   /* background-color: red; */
 
   & .pin-icon {
-    --icon-size: 24px;
+    --icon-size: 48px;
     height: var(--icon-size);
     width: var(--icon-size);
+    transition: transform 0.15s ease;
+
+    &:hover {
+      transform: translateY(calc(-1 * var(--transform-distance)));
+    }
+  }
+
+  &:hover .pin-icon {
+    transform: translateY(calc(-1 * var(--transform-distance)));
+    cursor: pointer;
+  }
+
+  & .text {
+    display: none;
   }
 }
