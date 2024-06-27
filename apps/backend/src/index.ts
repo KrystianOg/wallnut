@@ -3,8 +3,6 @@ import { WebSocketServer } from "ws";
 import http from "http";
 import { randomUUID } from "crypto";
 
-const PORT = 8000;
-
 const app = express();
 
 app.get("/", (_, res) => {
@@ -25,21 +23,23 @@ wss.on("connection", function connection(ws) {
 
   store.set(ID, JSON.stringify({}));
 
-  ws.on("message", (data, isBinary) => {
-    console.log("data", data.toString(), isBinary);
+  ws.on("open", () => {
+    console.log(store);
   });
 
-  // ws.on("message", function message(data, isBinary) {
-  //   wss.clients.forEach((client) => {
-  //     if (client.readyState === WebSocket.OPEN) {
-  //       client.send(JSON.stringify({ kind: message, data }), {
-  //         binary: isBinary,
-  //       });
-  //     }
-  //   });
-  // });
+  ws.on("message", function message(data, isBinary) {
+    wss.clients.forEach((client) => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(JSON.stringify({ kind: message, data }), {
+          binary: isBinary,
+        });
+      }
+    });
+  });
 });
 
-httpServer.listen(PORT, () => {
-  console.log(`[server]: Server is running at http::localhost:${PORT}`);
+httpServer.listen(process.env.PORT, () => {
+  console.log(
+    `[server]: Server is running at http::localhost:${process.env.PORT}`,
+  );
 });

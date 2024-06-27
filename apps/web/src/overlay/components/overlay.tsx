@@ -1,23 +1,12 @@
-import { FormEventHandler, useEffect, useRef } from "react";
+import { FormEventHandler, useEffect } from "react";
 import { useOverlay } from "../../context/OverlayContext";
 import styles from "./overlay.module.css";
-// import { Vector2D } from "../../types";
 import { useWebSocket } from "../../hooks/useWebsocket";
 import { PIN_SIZE } from "../../constants";
 import { useThrottle } from "../../hooks/useThrottle";
-import { usePrevious } from "../../hooks/usePrevious";
-
-export function useQueue() {
-  const queue = useRef<number[]>([]);
-  const { gridOffset } = useOverlay();
-  const previousGridOffset = usePrevious(gridOffset);
-
-  useEffect(() => { }, [gridOffset]);
-}
 
 export function Overlay() {
-  const { offset, gridOffset } = useOverlay();
-
+  const { offset } = useOverlay();
   const connection = useWebSocket();
 
   const handleOffsetUpdate = () => {
@@ -42,9 +31,8 @@ export function Overlay() {
 
   const onSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    console.log("dupa", e);
+    // @ts-expect-error NOTE: it turns out target exists and is not typed, don't have time to deal with it now
     const text: string = e.target[0].value;
-    console.log("text", text);
     connection.current?.send(JSON.stringify({ note: text }));
   };
 

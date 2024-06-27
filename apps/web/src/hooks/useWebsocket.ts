@@ -21,13 +21,7 @@ export function useWebSocket() {
     };
 
     const onMessage = (event: MessageEvent<MessageEventData>) => {
-      if (event.data.kind === "new-note") {
-        console.log(JSON.stringify(event.data.data));
-      } else if (event.data.kind === "message") {
-        console.log("message", event.data.data);
-      } else {
-        console.log("Message from server ", event.data);
-      }
+      // FIXME:
     };
 
     connectionRef.current.addEventListener("error", onError);

@@ -18,8 +18,6 @@ export const OverlayProvider = ({ children }: React.PropsWithChildren) => {
   );
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const CHUNK_SIZE = 4;
 export const useOverlay = () => {
   const { offset, ...context } = useContext(OverlayContext);
 
