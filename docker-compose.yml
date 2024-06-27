@@ -1,0 +1,44 @@
+services:
+  db:
+    image: postgres:16.3-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - db:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/create_tables.sql
+
+  api:
+    container_name: api
+    build:
+      context: ./apps/backend
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./:/backend
+      - /backend/node_modules
+    depends_on:
+      - db
+    ports:
+      - 8000:8000
+    command: pnpm start:production
+
+  web:
+    container_name: web
+    build:
+      context: ./apps/web
+      dockerfile: .//Dockerfile
+    volumes:
+      - ./:/web
+      - /web/node_modules
+    ports:
+      - 3000:3000
+    command: pnpm start
+  # proxy:
+  # image: nginx:1.27
+
+volumes:
+  db:
+    driver: local

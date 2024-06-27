@@ -3,8 +3,8 @@ ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
 
-COPY . /web
-WORKDIR /web
+COPY . /backend
+WORKDIR /backend
 
 FROM base AS prod-deps
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
@@ -14,11 +14,7 @@ RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 RUN pnpm run build
 
 FROM base
-COPY --from=prod-deps /web/node_modules /web/node_modules
-COPY --from=build /web/dist /web/dist
-
-# static
-FROM nginx:1.27-alpine AS nginx-base
-COPY --from=build /web/dist /usr/share/nginx/html
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+COPY --from=prod-deps /backend/node_modules /backend/node_modules
+COPY --from=build /backend/dist /backend/dist
+EXPOSE 8000 
+CMD ["pnpm", "start:production"]
