@@ -3,13 +3,26 @@ services:
     image: postgres:16.3-alpine
     restart: always
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     ports:
-      - "5432:5432"
+      - 5432:5432
+    networks:
+      - pg-network
     volumes:
       - db:/var/lib/postgresql/data
       - ./db/init.sql:/docker-entrypoint-initdb.d/create_tables.sql
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    restart: always
+    ports:
+      - 8888:80
+    networks:
+      - pg-network
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
 
   api:
     container_name: api
@@ -24,7 +37,6 @@ services:
     ports:
       - 8000:8000
     command: pnpm start:production
-
   web:
     container_name: web
     build:
@@ -33,12 +45,10 @@ services:
     volumes:
       - ./:/web
       - /web/node_modules
-    ports:
-      - 3000:3000
-    command: pnpm start
-  # proxy:
-  # image: nginx:1.27
 
 volumes:
   db:
     driver: local
+
+networks:
+  pg-network:
